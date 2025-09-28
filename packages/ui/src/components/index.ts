@@ -7,6 +7,7 @@ export * from "./use-toast"
 
 // Dashboard components
 export * from "./app-sidebar"
+export * from "./app-right-sidebar"
 export * from "./chart-area-interactive"
 export * from "./data-table"
 export * from "./nav-documents"

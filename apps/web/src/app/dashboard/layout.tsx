@@ -1,48 +1,22 @@
 "use client"
 
 import { AppSidebar } from "@forge/ui/components/app-sidebar"
-import { SiteHeader } from "@forge/ui/components/site-header"
-import { TenantSwitcher } from "@forge/ui/components/tenant-switcher"
+import { AppRightSidebar } from "@forge/ui/components/app-right-sidebar"
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarHeader,
   SidebarInset,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   SidebarProvider,
-  SidebarRail,
   SidebarTrigger,
+  useSidebar,
 } from "@forge/ui/components/ui/sidebar"
+import { Button } from "@forge/ui/components/ui/button"
 import { Separator } from "@forge/ui/components/ui/separator"
-import { Building2, ListIcon, MessageCircle, Factory, Store, Wrench } from "lucide-react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@forge/ui/components/ui/tabs"
-
-// Mock tenant data
-const tenants = [
-  {
-    name: "Acme Manufacturing",
-    logo: Factory,
-    plan: "Enterprise",
-  },
-  {
-    name: "Global Retail Corp",
-    logo: Store,
-    plan: "Professional",
-  },
-  {
-    name: "Tech Solutions Inc",
-    logo: Wrench,
-    plan: "Professional",
-  },
-]
+import { Building2, PanelRight } from "lucide-react"
+import * as React from "react"
 
 // Simple header with only breadcrumbs
 function BreadcrumbHeader() {
+  const { toggleRightSidebar } = useSidebar()
+  
   return (
     <header className="flex h-16 shrink-0 items-center gap-2 px-4 border-b">
       <div className="flex items-center gap-2">
@@ -53,49 +27,18 @@ function BreadcrumbHeader() {
           Dashboard / Overview
         </div>
       </div>
+      <div className="ml-auto">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-7 w-7"
+          onClick={toggleRightSidebar}
+        >
+          <PanelRight className="h-4 w-4" />
+          <span className="sr-only">Toggle Right Sidebar</span>
+        </Button>
+      </div>
     </header>
-  )
-}
-
-// Right sidebar component with consistent height
-function RightSidebar({
-  ...props
-}: React.ComponentProps<typeof Sidebar>) {
-  return (
-    <Sidebar
-      side="right"
-      collapsible="none"
-      className="sticky top-0 hidden h-screen border-l xl:flex w-80 shrink-0"
-      {...props}
-    >
-      <SidebarHeader className="h-16 border-b border-sidebar-border flex items-center justify-center px-4">
-        <TenantSwitcher tenants={tenants} />
-      </SidebarHeader>
-        <Tabs className="flex-1 flex flex-col" defaultValue="settings">
-
-      <SidebarContent className="p-0">
-        <TabsContent value="settings" className="w-full p-4 text-sm text-muted-foreground">
-              Settings content goes here.
-            </TabsContent>
-            <TabsContent value="help" className="w-full p-4 text-sm text-muted-foreground">
-              Help content goes here.
-            </TabsContent>  
-      </SidebarContent>
-      <SidebarFooter className="border-t h-16 flex items-center px-4">
-            <TabsList className="w-full">
-              <TabsTrigger value="settings" className="w-full justify-center">
-                <ListIcon className="mr-2 size-4" />
-              </TabsTrigger>
-              <TabsTrigger value="help" className="w-full justify-center">
-                <MessageCircle className="mr-2 size-4" />
-              </TabsTrigger>
-            </TabsList>
-                
-      </SidebarFooter>
-        </Tabs>
-
-      <SidebarRail />
-    </Sidebar>
   )
 }
 
@@ -134,7 +77,7 @@ export default function DashboardLayout({
           </div>
           <MainContentFooter />
         </SidebarInset>
-        <RightSidebar />
+        <AppRightSidebar />
       </div>
     </SidebarProvider>
   )
