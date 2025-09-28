@@ -1,0 +1,26 @@
+{
+  "name": "@forge/inventory-management",
+  "version": "1.0.0",
+  "description": "Inventory management plugin for Forge CMMS",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@forge/core": "workspace:*",
+    "@forge/ui": "workspace:*",
+    "react": "^18.2.0",
+    "lucide-react": "^0.316.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.48",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0"
+  }
+}
