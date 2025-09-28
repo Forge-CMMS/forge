@@ -12,7 +12,15 @@
     "declaration": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"],
+      "src/components/*": ["src/components/*"],
+      "src/lib/*": ["src/lib/*"],
+      "src/hooks/*": ["src/hooks/*"],
+      "src/styles/*": ["src/styles/*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
