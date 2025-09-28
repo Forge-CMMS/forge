@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   description: "🛠️ Open-source CMMS that adapts to your needs - build custom maintenance solutions with plug-and-play modules",
 }
 
+
 export default function RootLayout({
   children,
 }: {

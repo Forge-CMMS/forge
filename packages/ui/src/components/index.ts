@@ -15,6 +15,7 @@ export * from "./nav-secondary"
 export * from "./nav-user"
 export * from "./section-cards"
 export * from "./site-header"
+export * from "./tenant-switcher"
 
 // UI components (only new ones not already exported above)
 export * from "./ui/avatar"

@@ -2,6 +2,7 @@
 
 import { AppSidebar } from "@forge/ui/components/app-sidebar"
 import { SiteHeader } from "@forge/ui/components/site-header"
+import { TenantSwitcher } from "@forge/ui/components/tenant-switcher"
 import {
   Sidebar,
   SidebarContent,
@@ -18,7 +19,27 @@ import {
   SidebarTrigger,
 } from "@forge/ui/components/ui/sidebar"
 import { Separator } from "@forge/ui/components/ui/separator"
-import { Building2 } from "lucide-react"
+import { Building2, ListIcon, MessageCircle, Factory, Store, Wrench } from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@forge/ui/components/ui/tabs"
+
+// Mock tenant data
+const tenants = [
+  {
+    name: "Acme Manufacturing",
+    logo: Factory,
+    plan: "Enterprise",
+  },
+  {
+    name: "Global Retail Corp",
+    logo: Store,
+    plan: "Professional",
+  },
+  {
+    name: "Tech Solutions Inc",
+    logo: Wrench,
+    plan: "Professional",
+  },
+]
 
 // Simple header with only breadcrumbs
 function BreadcrumbHeader() {
@@ -44,51 +65,35 @@ function RightSidebar({
     <Sidebar
       side="right"
       collapsible="none"
-      className="sticky top-0 hidden h-screen border-l lg:flex"
+      className="sticky top-0 hidden h-screen border-l xl:flex w-80 shrink-0"
       {...props}
     >
-      <SidebarHeader className="h-16 border-b border-sidebar-border flex items-center px-4">
-        <div className="flex items-center gap-2">
-          <Building2 className="h-6 w-6" />
-          <div className="flex flex-col">
-            <span className="text-sm font-semibold">Acme Corp</span>
-            <button className="text-xs text-muted-foreground hover:text-foreground transition-colors text-left">
-              Switch tenant ↓
-            </button>
-          </div>
-        </div>
+      <SidebarHeader className="h-16 border-b border-sidebar-border flex items-center justify-center px-4">
+        <TenantSwitcher tenants={tenants} />
       </SidebarHeader>
+        <Tabs className="flex-1 flex flex-col" defaultValue="settings">
+
       <SidebarContent className="p-0">
-        <SidebarGroup className="p-0">
-          <SidebarGroupContent className="p-2">
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton className="h-10">
-                  <span>Recent Activity</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton className="h-10">
-                  <span>Notifications</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton className="h-10">
-                  <span>Quick Actions</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        <TabsContent value="settings" className="w-full p-4 text-sm text-muted-foreground">
+              Settings content goes here.
+            </TabsContent>
+            <TabsContent value="help" className="w-full p-4 text-sm text-muted-foreground">
+              Help content goes here.
+            </TabsContent>  
       </SidebarContent>
       <SidebarFooter className="border-t h-16 flex items-center px-4">
-        <div className="flex items-center gap-2 w-full">
-          <Building2 className="h-4 w-4 text-muted-foreground" />
-          <span className="text-xs text-muted-foreground flex-1">
-            Tenant Panel
-          </span>
-        </div>
+            <TabsList className="w-full">
+              <TabsTrigger value="settings" className="w-full justify-center">
+                <ListIcon className="mr-2 size-4" />
+              </TabsTrigger>
+              <TabsTrigger value="help" className="w-full justify-center">
+                <MessageCircle className="mr-2 size-4" />
+              </TabsTrigger>
+            </TabsList>
+                
       </SidebarFooter>
+        </Tabs>
+
       <SidebarRail />
     </Sidebar>
   )
@@ -120,15 +125,17 @@ export default function DashboardLayout({
 }) {
   return (
     <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset className="flex flex-col h-screen">
-        <BreadcrumbHeader />
-        <div className="flex-1 overflow-auto p-4">
-          {children}
-        </div>
-        <MainContentFooter />
-      </SidebarInset>
-      <RightSidebar />
+      <div className="grid grid-cols-[auto_1fr_auto] h-screen w-screen overflow-hidden">
+        <AppSidebar />
+        <SidebarInset className="flex flex-col h-screen min-w-0">
+          <BreadcrumbHeader />
+          <div className="flex-1 overflow-auto p-4">
+            {children}
+          </div>
+          <MainContentFooter />
+        </SidebarInset>
+        <RightSidebar />
+      </div>
     </SidebarProvider>
   )
 }

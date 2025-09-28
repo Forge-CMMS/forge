@@ -7,6 +7,7 @@ import {
   Building2,
   CameraIcon,
   ClipboardListIcon,
+  Command,
   DatabaseIcon,
   FileCodeIcon,
   FileIcon,
@@ -161,16 +162,16 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="h-16 border-b flex items-center px-4">
+      <SidebarHeader className="h-16 border-b flex items-center justify-center">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
+              tooltip="Forge"
             >
               <a href="#">
-                <ArrowUpCircleIcon className="h-5 w-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
+                <Command className="h-5 w-5" />
+                <span className="text-base font-semibold">Forge</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
