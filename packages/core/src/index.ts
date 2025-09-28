@@ -12,7 +12,7 @@ export interface ForgeModule {
 
 export interface ModuleRoute {
   path: string
-  component: React.ComponentType
+  component: any // Component type - can be React.ComponentType or any other framework
   permissions?: string[]
 }
 

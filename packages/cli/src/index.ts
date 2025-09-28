@@ -20,6 +20,3 @@ export class ForgeCliCore {
     // Implementation would list installed modules
   }
 }
-
-export * from "./commands/module"
-export * from "./commands/dev"
