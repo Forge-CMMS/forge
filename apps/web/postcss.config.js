@@ -1,0 +1,1 @@
+module.exports = require("@forge/ui/postcss.config.js")

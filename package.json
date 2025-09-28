@@ -1,0 +1,33 @@
+{
+  "name": "forge-cmms",
+  "version": "0.1.0",
+  "description": "🛠️ Open-source CMMS that adapts to your needs - build custom maintenance solutions with plug-and-play modules",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "type-check": "turbo type-check",
+    "test": "turbo test",
+    "clean": "turbo clean",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo build --filter=!@forge/docs && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1",
+    "prettier": "^3.0.0",
+    "turbo": "^1.13.0",
+    "typescript": "^5.0.0"
+  },
+  "packageManager": "pnpm@8.15.6",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "modules/*"
+  ]
+}
