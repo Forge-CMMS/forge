@@ -4,6 +4,7 @@ import * as React from "react"
 import {
   ArrowUpCircleIcon,
   BarChartIcon,
+  Building2,
   CameraIcon,
   ClipboardListIcon,
   DatabaseIcon,
@@ -32,6 +33,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "./ui/sidebar"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select"
 
 const data = {
   user: {
@@ -152,8 +160,8 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
-      <SidebarHeader>
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader className="h-16 border-b flex items-center px-4">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
@@ -168,12 +176,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent >
         <NavMain items={data.navMain} />
         <NavDocuments items={data.documents} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="border-t h-16">
         <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>
