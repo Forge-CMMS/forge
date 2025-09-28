@@ -1,7 +1,7 @@
 "use client"
 
+import * as React from "react"
 import { AppSidebar } from "@forge/ui/components/app-sidebar"
-import { AppRightSidebar } from "@forge/ui/components/app-right-sidebar"
 import {
   SidebarInset,
   SidebarProvider,
@@ -11,10 +11,16 @@ import {
 import { Button } from "@forge/ui/components/ui/button"
 import { Separator } from "@forge/ui/components/ui/separator"
 import { Building2, PanelRight } from "lucide-react"
-import * as React from "react"
+import {
+  DynamicSidebar,
+  DynamicTabs,
+  DynamicContentRouter,
+  usePluginStore
+} from "@forge/ui/layout"
+import { initializePlugins } from "../../lib/plugin-init"
 
-// Simple header with only breadcrumbs
-function BreadcrumbHeader() {
+// Plugin-aware header component
+function DynamicBreadcrumbHeader() {
   const { toggleRightSidebar } = useSidebar()
   
   return (
@@ -22,7 +28,6 @@ function BreadcrumbHeader() {
       <div className="flex items-center gap-2">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mr-2 h-4" />
-        {/* Breadcrumbs will go here - can be passed as props or context */}
         <div className="text-sm text-muted-foreground">
           Dashboard / Overview
         </div>
@@ -42,19 +47,27 @@ function BreadcrumbHeader() {
   )
 }
 
-// Main content footer component with consistent height
+// Main content footer
 function MainContentFooter() {
   return (
     <footer className="sticky bottom-0 border-t bg-background h-16 flex items-center px-6">
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-2">
           <Building2 className="h-4 w-4 text-muted-foreground" />
-          <p className="text-sm text-muted-foreground">&copy; 2024 Forge CMMS. All rights reserved.</p>
+          <p className="text-sm text-muted-foreground">
+            &copy; 2024 Forge CMMS. All rights reserved.
+          </p>
         </div>
         <div className="flex items-center gap-4">
-          <a href="/help" className="text-sm text-muted-foreground hover:text-foreground">Help</a>
-          <a href="/privacy" className="text-sm text-muted-foreground hover:text-foreground">Privacy</a>
-          <a href="/terms" className="text-sm text-muted-foreground hover:text-foreground">Terms</a>
+          <a href="/help" className="text-sm text-muted-foreground hover:text-foreground">
+            Help
+          </a>
+          <a href="/privacy" className="text-sm text-muted-foreground hover:text-foreground">
+            Privacy
+          </a>
+          <a href="/terms" className="text-sm text-muted-foreground hover:text-foreground">
+            Terms
+          </a>
         </div>
       </div>
     </footer>
@@ -66,18 +79,99 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
+  const { activeTab, setActiveTab } = usePluginStore()
+  const [pluginsInitialized, setPluginsInitialized] = React.useState(false)
+  
+  React.useEffect(() => {
+    // Initialize plugins on mount
+    const initPlugins = async () => {
+      try {
+        await initializePlugins()
+        console.log('Plugins initialized in layout')
+        setPluginsInitialized(true)
+      } catch (error) {
+        console.error('Failed to initialize plugins:', error)
+        setPluginsInitialized(true) // Still show UI even if plugins fail
+      }
+    }
+
+    initPlugins()
+  }, [])
+
+  // Mock user permissions (in real app, this would come from auth context)
+  const userPermissions = React.useMemo(() => ({
+    user_id: "user-123",
+    tenant_id: "tenant-123",
+    roles: ["manager"],
+    direct_permissions: [
+      "dashboard:read",
+      "inventory:read",
+      "inventory:create",
+      "asset:read",
+      "workorder:read"
+    ]
+  }), [])
+
+  if (!pluginsInitialized) {
+    return (
+      <SidebarProvider>
+        <div className="grid grid-cols-[auto_1fr_auto] h-screen w-screen overflow-hidden">
+          <AppSidebar />
+          <SidebarInset className="flex flex-col h-screen min-w-0">
+            <DynamicBreadcrumbHeader />
+            <div className="flex-1 overflow-auto p-4">
+              <div className="flex items-center justify-center h-64">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
+                  <p className="text-muted-foreground">Loading plugins...</p>
+                </div>
+              </div>
+            </div>
+            <MainContentFooter />
+          </SidebarInset>
+          <div className="w-80 p-4 bg-background border-l">
+            <div className="text-sm text-muted-foreground text-center">
+              Loading plugins...
+            </div>
+          </div>
+        </div>
+      </SidebarProvider>
+    )
+  }
+
   return (
     <SidebarProvider>
       <div className="grid grid-cols-[auto_1fr_auto] h-screen w-screen overflow-hidden">
         <AppSidebar />
         <SidebarInset className="flex flex-col h-screen min-w-0">
-          <BreadcrumbHeader />
-          <div className="flex-1 overflow-auto p-4">
-            {children}
+          <DynamicBreadcrumbHeader />
+          <div className="flex-1 overflow-auto">
+            <div className="p-6">
+              {/* Main content area with dynamic tabs */}
+              <DynamicTabs
+                userPermissions={userPermissions}
+                defaultTab={activeTab}
+                onTabChange={setActiveTab}
+              />
+              
+              {/* Fallback to regular children if no tabs are available */}
+              <div className="mt-6">
+                <DynamicContentRouter
+                  path="/dashboard"
+                  userPermissions={userPermissions}
+                  fallback={() => children}
+                />
+              </div>
+            </div>
           </div>
           <MainContentFooter />
         </SidebarInset>
-        <AppRightSidebar />
+        <DynamicSidebar 
+          userPermissions={userPermissions}
+          onPanelToggle={(panelId: string, collapsed: boolean) => {
+            console.log(`Panel ${panelId} ${collapsed ? 'collapsed' : 'expanded'}`)
+          }}
+        />
       </div>
     </SidebarProvider>
   )

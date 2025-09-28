@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Wrench, Clock } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Badge } from '@forge/ui'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Badge } from '@forge/ui/components'
 import type { Plugin } from '@forge/core'
 
 // Work Orders overview component

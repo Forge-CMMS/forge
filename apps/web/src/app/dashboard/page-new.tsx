@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from 'react'
-import { DynamicLayout } from "../../components/DynamicLayout"
+import DynamicLayout from "../../components/DynamicLayout"
 import { initializePlugins } from "../../lib/plugin-init"
 import { ChartAreaInteractive } from "@forge/ui/components/chart-area-interactive"
 import { DataTable } from "@forge/ui/components/data-table"

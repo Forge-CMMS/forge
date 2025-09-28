@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Package, Settings } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button } from '@forge/ui'
+import { Card, CardContent, CardHeader, CardTitle, Button } from '@forge/ui/components'
 import type { Plugin } from '@forge/core'
 
 // Assets overview component

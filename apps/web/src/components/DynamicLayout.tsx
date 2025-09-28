@@ -16,7 +16,7 @@ import {
   DynamicTabs,
   DynamicContentRouter,
   usePluginStore
-} from "@forge/ui"
+} from "@forge/ui/layout"
 import { pluginRegistry } from "@forge/core"
 
 // Plugin-aware header component
@@ -148,7 +148,7 @@ export default function DynamicLayout({
         </SidebarInset>
         <DynamicSidebar 
           userPermissions={userPermissions}
-          onPanelToggle={(panelId, collapsed) => {
+          onPanelToggle={(panelId: string, collapsed: boolean) => {
             console.log(`Panel ${panelId} ${collapsed ? 'collapsed' : 'expanded'}`)
           }}
         />
