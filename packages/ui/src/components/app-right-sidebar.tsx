@@ -43,9 +43,9 @@ export function AppRightSidebar({ ...props }: React.ComponentProps<typeof Sideba
         <TenantSwitcher tenants={tenants} />
       </SidebarHeader>
       
-      <Tabs className="flex-1 flex flex-col" defaultValue="settings">
+      <Tabs className="flex-1 flex flex-col" defaultValue="treeview">
         <SidebarContent className="p-0">
-          <TabsContent value="settings" className="w-full p-4 text-sm text-muted-foreground">
+          <TabsContent value="treeview" className="w-full p-4 text-sm text-muted-foreground">
             Settings content goes here.
           </TabsContent>
           <TabsContent value="help" className="w-full p-4 text-sm text-muted-foreground">
@@ -55,7 +55,7 @@ export function AppRightSidebar({ ...props }: React.ComponentProps<typeof Sideba
         
         <SidebarFooter className="border-t h-16 flex items-center px-4">
           <TabsList className="w-full">
-            <TabsTrigger value="settings" className="w-full justify-center">
+            <TabsTrigger value="treeview" className="w-full justify-center">
               <ListIcon className="mr-2 size-4" />
             </TabsTrigger>
             <TabsTrigger value="help" className="w-full justify-center">

@@ -76,4 +76,17 @@ const CardFooter = React.forwardRef<
 ))
 CardFooter.displayName = "CardFooter"
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+// Card action
+const CardAction = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("ml-auto flex items-center", className)}
+    {...props}
+  />
+))
+CardAction.displayName = "CardAction"
+
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, CardAction }
