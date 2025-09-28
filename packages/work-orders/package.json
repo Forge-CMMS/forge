@@ -1,5 +1,5 @@
 {
-  "name": "@forge/module-assets",
+  "name": "@forge/work-orders",
   "version": "0.1.0",
   "private": true,
   "main": "./src/index.ts",
