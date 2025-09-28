@@ -21,13 +21,16 @@
       "types": "./dist/lib/*.d.ts",
       "default": "./dist/lib/*.js"
     },
+    "./styles.css": "./dist/styles.css",
     "./postcss.config.js": "./postcss.config.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tailwindcss -i src/styles/globals.css -o dist/styles.css",
     "dev": "tsc --watch",
     "lint": "eslint src/",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "build:css": "tailwindcss -i src/styles/globals.css -o dist/styles.css",
+    "dev:css": "tailwindcss -i src/styles/globals.css -o dist/styles.css --watch"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.1.2",
@@ -43,7 +46,7 @@
     "@radix-ui/react-scroll-area": "^1.0.5",
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-separator": "^1.0.3",
-    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/react-toast": "^1.1.5",
@@ -53,12 +56,15 @@
     "lucide-react": "^0.316.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tailwind-merge": "^2.2.1"
+    "tailwind-merge": "^2.2.1",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
+    "autoprefixer": "^10.4.17",
     "eslint": "^8.56.0",
+    "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3"
   },
   "peerDependencies": {
