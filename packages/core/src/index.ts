@@ -77,6 +77,9 @@ class ModuleRegistry {
 
 export const moduleRegistry = new ModuleRegistry()
 
+// Plugin Registry System
+export * from "./registry"
+
 // Core entities
 export * from "./modules/assets"
 export * from "./modules/work-orders"

@@ -17,7 +17,7 @@ import {
   DynamicContentRouter,
   usePluginStore
 } from "@forge/ui/layout"
-import { initializePlugins } from "../../lib/plugin-init"
+import { pluginRegistry } from "@forge/core"
 
 // Plugin-aware header component
 function DynamicBreadcrumbHeader() {
@@ -74,28 +74,36 @@ function MainContentFooter() {
   )
 }
 
-export default function DashboardLayout({
-  children,
-}: {
+interface DynamicLayoutProps {
   children: React.ReactNode
-}) {
+  currentPath?: string
+}
+
+export default function DynamicLayout({
+  children,
+  currentPath = "/dashboard"
+}: DynamicLayoutProps) {
   const { activeTab, setActiveTab } = usePluginStore()
-  const [pluginsInitialized, setPluginsInitialized] = React.useState(false)
   
   React.useEffect(() => {
     // Initialize plugins on mount
-    const initPlugins = async () => {
+    const initializePlugins = async () => {
       try {
-        await initializePlugins()
-        console.log('Plugins initialized in layout')
-        setPluginsInitialized(true)
+        // Load any registered plugins
+        const plugins = pluginRegistry.getAllPlugins()
+        for (const plugin of plugins) {
+          try {
+            await pluginRegistry.load(plugin.id)
+          } catch (error) {
+            console.warn(`Failed to load plugin ${plugin.id}:`, error)
+          }
+        }
       } catch (error) {
-        console.error('Failed to initialize plugins:', error)
-        setPluginsInitialized(true) // Still show UI even if plugins fail
+        console.error("Failed to initialize plugins:", error)
       }
     }
 
-    initPlugins()
+    initializePlugins()
   }, [])
 
   // Mock user permissions (in real app, this would come from auth context)
@@ -104,40 +112,12 @@ export default function DashboardLayout({
     tenant_id: "tenant-123",
     roles: ["manager"],
     direct_permissions: [
-      "dashboard:read",
       "inventory:read",
       "inventory:create",
       "asset:read",
       "workorder:read"
     ]
   }), [])
-
-  if (!pluginsInitialized) {
-    return (
-      <SidebarProvider>
-        <div className="grid grid-cols-[auto_1fr_auto] h-screen w-screen overflow-hidden">
-          <AppSidebar />
-          <SidebarInset className="flex flex-col h-screen min-w-0">
-            <DynamicBreadcrumbHeader />
-            <div className="flex-1 overflow-auto p-4">
-              <div className="flex items-center justify-center h-64">
-                <div className="text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-                  <p className="text-muted-foreground">Loading plugins...</p>
-                </div>
-              </div>
-            </div>
-            <MainContentFooter />
-          </SidebarInset>
-          <div className="w-80 p-4 bg-background border-l">
-            <div className="text-sm text-muted-foreground text-center">
-              Loading plugins...
-            </div>
-          </div>
-        </div>
-      </SidebarProvider>
-    )
-  }
 
   return (
     <SidebarProvider>
@@ -157,7 +137,7 @@ export default function DashboardLayout({
               {/* Fallback to regular children if no tabs are available */}
               <div className="mt-6">
                 <DynamicContentRouter
-                  path="/dashboard"
+                  path={currentPath}
                   userPermissions={userPermissions}
                   fallback={() => children}
                 />
